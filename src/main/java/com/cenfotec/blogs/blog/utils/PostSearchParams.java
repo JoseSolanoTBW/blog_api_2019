@@ -1,47 +1,48 @@
 package com.cenfotec.blogs.blog.utils;
 
-import java.time.LocalDate;
+import com.cenfotec.blogs.blog.domain.Preferences;
+
 import java.util.List;
 
 public class PostSearchParams {
 
-    private List<String> Preferences;
+    private List<Preferences> preferences;
 
-    private Long UserId;
+    private Long userId;
 
-    private boolean Liked;
+    private boolean liked;
 
-    private Long PostId;
+    private Long postId;
 
-    public Long getPostId() {
-        return PostId;
+    public List<Preferences> getPreferences() {
+        return preferences;
     }
 
-    public void setPostId(Long postId) {
-        PostId = postId;
-    }
-
-    public List<String> getPreferences() {
-        return Preferences;
-    }
-
-    public void setPreferences(List<String> preferences) {
-        Preferences = preferences;
+    public void setPreferences(List<Preferences> preferences) {
+        this.preferences = preferences;
     }
 
     public Long getUserId() {
-        return UserId;
+        return userId;
     }
 
     public void setUserId(Long userId) {
-        UserId = userId;
+        this.userId = userId;
     }
 
     public boolean isLiked() {
-        return Liked;
+        return liked;
     }
 
     public void setLiked(boolean liked) {
-        Liked = liked;
+        this.liked = liked;
+    }
+
+    public Long getPostId() {
+        return postId;
+    }
+
+    public void setPostId(Long postId) {
+        this.postId = postId;
     }
 }

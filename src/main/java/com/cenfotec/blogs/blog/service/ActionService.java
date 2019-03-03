@@ -26,7 +26,7 @@ public class ActionService {
     public List<Action> getActionsByTypeAndUser(int actionType, Long userId){
         List<Action> result = new ArrayList<Action>();
 
-        Optional<List<Action>> filter = actionRepository.findByActionTypeEqualsAndOwnerAction_Id(actionType, userId);
+        Optional<List<Action>> filter = actionRepository.findByActionTypeAndOwnerAction_Id(actionType, userId);
 
         if(filter.isPresent())
             result = filter.get();
@@ -58,5 +58,20 @@ public class ActionService {
 
     public Action save(Action action){
         return actionRepository.save(action);
+    }
+
+    public Action update(Action action){
+        Optional<Action> findAction = actionRepository.findById(action.getId());
+
+        if (findAction.isPresent()){
+            Action actionToChange = findAction.get();
+
+            actionToChange.setActionType(action.getActionType());
+            actionToChange.setComment(action.getComment());
+
+            return actionRepository.save(actionToChange);
+        }
+        else
+            return null;
     }
 }

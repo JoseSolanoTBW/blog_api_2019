@@ -72,25 +72,28 @@ public class UserPostService {
         return userPostRepository.save(userPost);
     }
 
+    @Transactional(readOnly = true)
     public List<UserPost> getPosts(PostSearchParams searchParams){
         List<UserPost> result = new ArrayList<UserPost>();
 
         if(searchParams.getPreferences() != null  && !searchParams.getPreferences().isEmpty()){
-            Optional<List<UserPost>> filter = userPostRepository.findUserPostByPreferencesIsInOrderByDateDesc(searchParams.getPreferences());
+            Optional<List<UserPost>> filter = userPostRepository.findDistinctByPreferencesIsInOrderByDateDesc(searchParams.getPreferences());
             if (filter.isPresent())
                 result = filter.get();
         }
 
-        if (searchParams.isLiked()){
+        if (searchParams.isLiked() && searchParams.getUserId() != null){
             List<Long> ids = new ArrayList<>();
-            List<Action> actions = actionService.getActionsByTypeAndUser(ActionType.Like.getValue(), searchParams.getUserId());
-            ids = actions.stream().map(Action::getId).collect(Collectors.toList());
+            List<Action> actions = actionService.getActionsByTypeAndUser(ActionType.Like.getValue(),searchParams.getUserId());
+            ids = actions.stream().map(Action::getPost).collect(Collectors.toList());
+
             Optional<List<UserPost>> filter = userPostRepository.findByIdIsInOrderByDateDesc(ids);
-            if (filter.isPresent())
-                result = filter.get();
+                if (filter.isPresent())
+                    result = filter.get();
         }
 
-        if (searchParams.getUserId() != null){
+        //Owner posts
+        if (searchParams.getUserId() != null && !searchParams.isLiked()){
             Optional<List<UserPost>> filter = userPostRepository.findByOwner_IdOrderByDateDesc(searchParams.getUserId());
             if (filter.isPresent())
                 result = filter.get();

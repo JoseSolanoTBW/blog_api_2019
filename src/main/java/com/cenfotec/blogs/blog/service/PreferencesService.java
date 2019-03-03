@@ -19,7 +19,7 @@ public class PreferencesService {
     }
 
     @Transactional(readOnly = true)
-    public List<Preferences> findLikeCategory(String name) {
+    public List<Preferences> findLike(String name) {
         return preferencesRepository.findSimilarPreferences(name);
     }
 

@@ -1,6 +1,7 @@
 package com.cenfotec.blogs.blog.utils;
 
 public enum ActionType {
+    Dislike(0),
     Like (1),
     Comment (2);
 

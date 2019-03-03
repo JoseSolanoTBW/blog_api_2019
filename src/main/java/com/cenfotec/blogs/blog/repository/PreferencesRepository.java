@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface PreferencesRepository extends JpaRepository<Preferences, Long> {
 
-    @Query("SELECT preference FROM Preferences preference WHERE preference.name LIKE :name ")
+    @Query("SELECT preference FROM Preferences preference WHERE preference.name LIKE :name% ")
     List<Preferences> findSimilarPreferences (@Param("name") String name);
 }

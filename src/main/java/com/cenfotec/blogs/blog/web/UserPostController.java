@@ -29,11 +29,4 @@ public class UserPostController {
     public List<UserPost> getPosts(@RequestBody PostSearchParams postParameters) throws NotFoundException {
         return userPostService.getPosts(postParameters);
     }
-
-    @PostMapping("/action")
-    public UserPost createAction(@RequestBody Action action) throws NotFoundException {
-        return userPostService.save(action);
-    }
-
-
 }

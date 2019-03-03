@@ -13,16 +13,24 @@ public class UserPost {
     @Column
     private Long id;
 
+    @Column(columnDefinition="TEXT")
     private String postText;
 
     private String imageSrc;
+
+    @Column(columnDefinition="TEXT")
+    private String postTitle;
 
     private LocalDate date;
 
     @OneToOne(cascade = CascadeType.ALL)
     private User owner;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "post_preferences",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "preference_id")
+    )
     private Set<Preferences> preferences = new HashSet<>();
 
     @Transient
@@ -37,6 +45,14 @@ public class UserPost {
             inverseJoinColumns = @JoinColumn(name = "action_id")
     )
     private Set<Action> actions = new HashSet<>();
+
+    public String getPostTitle() {
+        return postTitle;
+    }
+
+    public void setPostTitle(String postTitle) {
+        this.postTitle = postTitle;
+    }
 
     public String getPostText() {
         return postText;

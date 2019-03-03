@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface ActionRepository extends JpaRepository<Action, Long> {
 
-    Optional<List<Action>> findByActionTypeEqualsAndOwnerAction_Id(int actionType , Long ownerId);
+    Optional<List<Action>> findByActionTypeAndOwnerAction_Id(int actionType , Long ownerId);
 
     Optional<List<Action>> findByPost(Long postId);
 }
