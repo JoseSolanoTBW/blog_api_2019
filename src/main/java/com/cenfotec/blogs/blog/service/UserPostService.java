@@ -7,10 +7,14 @@ import com.cenfotec.blogs.blog.domain.UserPost;
 import com.cenfotec.blogs.blog.repository.UserPostRepository;
 import com.cenfotec.blogs.blog.utils.ActionType;
 import com.cenfotec.blogs.blog.utils.PostSearchParams;
+import com.cenfotec.blogs.blog.utils.image.CloudinaryUtil;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import javassist.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -31,12 +35,20 @@ public class UserPostService {
         this.userPostRepository = userPostRepository;
     }
 
-    public UserPost save(UserPost userPost) throws NotFoundException {
+    public UserPost save(UserPost userPost) throws NotFoundException, IOException {
 
         Set<Preferences> userPreferences = new HashSet<>();
         Set<Action> actions = new HashSet<>();
         User owner = userService.findById(userPost.getOwner().getId());
         userPost.setDate(LocalDate.now());
+        if(userPost.getImageSrc() != null && !userPost.getImageSrc().isEmpty()){
+        Cloudinary imageUpload = CloudinaryUtil.getCloudinaryInstance();
+        Map uploadResult = imageUpload.uploader().upload(userPost.getImageSrc(),  ObjectUtils.emptyMap());
+        userPost.setImageSrc(uploadResult.get("url").toString());}
+        else
+        {
+            userPost.setImageSrc("http://chittagongit.com/images/no-photo-available-icon/no-photo-available-icon-4.jpg");
+        }
 
         if (!userPost.getPreferences().isEmpty()){
             userPost.getPreferences().forEach(
@@ -127,6 +139,7 @@ public class UserPostService {
 
     private UserPost calculateLikes(UserPost userPost){
         userPost.setLikeCount((int) userPost.getActions().stream().filter(x -> x.getActionType() == ActionType.Like.getValue()).count());
+        userPost.setCommentCount((int) userPost.getActions().stream().filter(x -> x.getActionType() == ActionType.Comment.getValue()).count());
         return  userPost;
     }
 

@@ -7,6 +7,8 @@ import com.cenfotec.blogs.blog.service.UserPostService;
 import javassist.NotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/action")
 public class ActionController {
@@ -17,6 +19,10 @@ public class ActionController {
     public ActionController(UserPostService userPostService, ActionService actionService) {
         this.userPostService = userPostService;
         this.actionService = actionService;
+    }
+    @GetMapping("/by-post")
+    public List<Action> getActions(@RequestParam("id") Long id ) throws NotFoundException {
+        return actionService.getActionsByPost(id);
     }
 
     @PostMapping("/create")

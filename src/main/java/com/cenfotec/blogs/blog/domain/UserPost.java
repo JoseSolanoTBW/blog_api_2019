@@ -36,6 +36,9 @@ public class UserPost {
     @Transient
     private int LikeCount;
 
+    @Transient
+    private int CommentCount;
+
     @OneToMany(cascade = { CascadeType.PERSIST,
             CascadeType.DETACH,
             CascadeType.REFRESH,
@@ -116,5 +119,13 @@ public class UserPost {
 
     public void setOwner(User owner) {
         this.owner = owner;
+    }
+
+    public int getCommentCount() {
+        return CommentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        CommentCount = commentCount;
     }
 }

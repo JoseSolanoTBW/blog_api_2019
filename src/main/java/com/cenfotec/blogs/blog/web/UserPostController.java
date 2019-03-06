@@ -1,12 +1,11 @@
 package com.cenfotec.blogs.blog.web;
-
-import com.cenfotec.blogs.blog.domain.Action;
 import com.cenfotec.blogs.blog.domain.UserPost;
 import com.cenfotec.blogs.blog.service.UserPostService;
 import com.cenfotec.blogs.blog.utils.PostSearchParams;
 import javassist.NotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -21,7 +20,7 @@ public class UserPostController {
 
     @CrossOrigin
     @PostMapping("/create")
-    public UserPost postUser(@RequestBody UserPost userPost) throws NotFoundException {
+    public UserPost postUser(@RequestBody UserPost userPost) throws NotFoundException, IOException {
         return userPostService.save(userPost);
     }
 

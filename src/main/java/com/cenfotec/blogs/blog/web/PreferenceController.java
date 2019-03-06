@@ -25,4 +25,9 @@ public class PreferenceController {
     public List<Preferences> getPreferences(@RequestParam("searchTerm") String searchTerm ) throws NotFoundException {
         return preferencesService.findLike(searchTerm);
     }
+
+    @GetMapping("/all")
+    public List<Preferences> getAll() throws NotFoundException {
+        return preferencesService.findAll();
+    }
 }

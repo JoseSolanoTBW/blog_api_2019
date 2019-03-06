@@ -19,6 +19,11 @@ public class PreferencesService {
     }
 
     @Transactional(readOnly = true)
+    public List<Preferences> findAll() {
+        return preferencesRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
     public List<Preferences> findLike(String name) {
         return preferencesRepository.findSimilarPreferences(name);
     }
